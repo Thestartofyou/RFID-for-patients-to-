@@ -1,0 +1,58 @@
+import time
+import random
+
+# Sample RFID tags and corresponding patients
+patients = {
+    'tag_001': 'Patient A',
+    'tag_002': 'Patient B',
+    'tag_003': 'Patient C',
+    'tag_004': 'Patient D',
+}
+
+# Simulating facility zones where RFID readers are installed
+zones = {
+    'zone_1': 'Entrance',
+    'zone_2': 'Hallway',
+    'zone_3': 'Room 101',
+    'zone_4': 'Cafeteria',
+}
+
+# A dictionary to keep track of the last known location of each patient
+patient_location = {patient: 'Unknown' for patient in patients.values()}
+
+# Simulate RFID readings from a particular zone
+def read_rfid_from_zone(zone):
+    # Simulating random RFID readings from this zone
+    # In real-world usage, this would interface with the RFID reader
+    detected_rfid = random.choice(list(patients.keys()) + [None])
+    return detected_rfid
+
+# Update patient location
+def update_patient_location(rfid_tag, zone):
+    if rfid_tag in patients:
+        patient = patients[rfid_tag]
+        location = zones[zone]
+        if patient_location[patient] != location:
+            patient_location[patient] = location
+            print(f"{patient} has moved to {location}")
+        else:
+            print(f"{patient} remains at {location}")
+    else:
+        print("No valid RFID tag detected")
+
+# Main loop to continuously check for RFID readings
+def track_patients():
+    try:
+        while True:
+            # Simulate each zone's RFID reader
+            for zone in zones:
+                rfid_tag = read_rfid_from_zone(zone)
+                if rfid_tag:
+                    update_patient_location(rfid_tag, zone)
+            # Sleep for a bit to simulate real-time tracking
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Tracking stopped.")
+
+if __name__ == "__main__":
+    track_patients()
